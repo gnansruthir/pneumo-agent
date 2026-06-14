@@ -1,0 +1,27 @@
+# Python files
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+
+# PyTorch weights & heavy downloads
+weights/*.pth
+weights/*.pt
+
+# Static uploads and outputs generated dynamically
+static/uploads/*
+static/output/*
+test_sample.png
+
+# Keep folders but ignore contents
+!static/uploads/.gitkeep
+!static/output/.gitkeep
+!weights/.gitkeep
+
+# IDEs & System files
+.vscode/
+.DS_Store
+Thumbs.db

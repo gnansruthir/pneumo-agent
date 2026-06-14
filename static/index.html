@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PneumoAgent – Agentic Chest X-Ray Screening</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- HUD Corners -->
+  <div class="hud-corner hud-tl"></div>
+  <div class="hud-corner hud-tr"></div>
+  <div class="hud-corner hud-bl"></div>
+  <div class="hud-corner hud-br"></div>
+
+  <!-- Background grid & Canvas for particle fields -->
+  <div class="bg-grid"></div>
+  <canvas id="particle-canvas"></canvas>
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon"></div>
+      PNEUMO<span>AGENT</span>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">Clinical Intelligence System</span>
+      <h1>AI That Reads What <span>Radiologists Miss</span></h1>
+      <p>
+        Unified 15-class Chest X-ray classification (14 NIH findings + Tuberculosis) 
+        boosted via tuned F1 thresholds, combined with a multi-agent RAG workflow 
+        producing clinical impressions and bilingual patient summaries.
+      </p>
+      <a href="#demo-section" class="hero-cta">UPLOAD & ANALYZE</a>
+    </div>
+    
+    <div class="hero-visual">
+      <div class="lung-container" id="lung-container">
+        <!-- SVG lung wireframe representation -->
+        <svg viewBox="0 0 100 100" width="320" height="320" style="filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.4))">
+          <!-- Left Lung -->
+          <path d="M 46 25 C 32 20, 15 35, 16 55 C 17 70, 28 85, 45 83 C 48 82.5, 48 75, 46 72 C 43 68, 42 60, 47 50 Z" 
+                fill="none" stroke="#00F2FE" stroke-width="1.5" stroke-dasharray="1 1.5" />
+          <path d="M 43 28 C 34 25, 20 40, 22 55 C 23 68, 32 78, 43 77" 
+                fill="none" stroke="#00F2FE" stroke-width="0.8" opacity="0.6" />
+          <!-- Right Lung -->
+          <path d="M 54 25 C 68 20, 85 35, 84 55 C 83 70, 72 85, 55 83 C 52 82.5, 52 75, 54 72 C 57 68, 58 60, 53 50 Z" 
+                fill="none" stroke="#00F2FE" stroke-width="1.5" stroke-dasharray="1 1.5" />
+          <path d="M 57 28 C 66 25, 80 40, 78 55 C 77 68, 68 78, 57 77" 
+                fill="none" stroke="#00F2FE" stroke-width="0.8" opacity="0.6" />
+          <!-- Trachea and Bronchi -->
+          <path d="M 50 15 L 50 45" fill="none" stroke="#00F2FE" stroke-width="2.5" />
+          <path d="M 50 45 Q 48 50, 42 54" fill="none" stroke="#00F2FE" stroke-width="2" />
+          <path d="M 50 45 Q 52 50, 58 54" fill="none" stroke="#00F2FE" stroke-width="2" />
+          <!-- Small lung structures / details -->
+          <line x1="28" y1="45" x2="35" y2="48" stroke="#00F2FE" stroke-width="0.5" opacity="0.5" />
+          <line x1="25" y1="58" x2="32" y2="59" stroke="#00F2FE" stroke-width="0.5" opacity="0.5" />
+          <line x1="72" y1="45" x2="65" y2="48" stroke="#00F2FE" stroke-width="0.5" opacity="0.5" />
+          <line x1="75" y1="58" x2="68" y2="59" stroke="#00F2FE" stroke-width="0.5" opacity="0.5" />
+        </svg>
+        <div class="scan-beam"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: How It Works / 3D Pipeline Flow -->
+  <section class="pipeline">
+    <h2 class="section-title">Agentic <span>Analysis Pipeline</span></h2>
+    <div class="pipeline-flow">
+      <div class="pipeline-card glass-panel glow-teal-hover">
+        <span class="card-num">AGENT 01</span>
+        <span class="card-icon">🔍</span>
+        <h3>Triage QA</h3>
+        <p>Preprocesses uploaded X-rays, verifies alignment, adjusts contrast using CLAHE, and validates lung bounds.</p>
+      </div>
+
+      <div class="pipeline-card glass-panel glow-teal-hover">
+        <span class="card-num">AGENT 02</span>
+        <span class="card-icon">🧠</span>
+        <h3>Classifier</h3>
+        <p>Custom DenseNet-121 model predicts probabilities for 15 classes (including TB) using optimized classification thresholds.</p>
+      </div>
+
+      <div class="pipeline-card glass-panel glow-teal-hover">
+        <span class="card-num">AGENT 03</span>
+        <span class="card-icon">📍</span>
+        <h3>Localization</h3>
+        <p>Computes Grad-CAM attention weights to construct a pixel heatmap overlay mapping the exact visual findings.</p>
+      </div>
+
+      <div class="pipeline-card glass-panel glow-teal-hover">
+        <span class="card-num">AGENT 04</span>
+        <span class="card-icon">🗂️</span>
+        <h3>Reasoning (RAG)</h3>
+        <p>Pulls local semantic WHO and national clinical guidelines corresponding to detected diseases for context validation.</p>
+      </div>
+
+      <div class="pipeline-card glass-panel glow-teal-hover">
+        <span class="card-num">AGENT 05</span>
+        <span class="card-icon">📝</span>
+        <h3>Reporter</h3>
+        <p>Generates structured clinical reports and patient summaries translated into English and Hindi using LLM generation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Live Demo Panel -->
+  <section id="demo-section" class="demo">
+    <h2 class="section-title">Clinical <span>Diagnostic Console</span></h2>
+    
+    <div class="demo-grid">
+      <!-- Left side: Upload Area -->
+      <div class="upload-panel glass-panel">
+        <div class="drop-zone" id="drop-zone">
+          <div class="upload-icon">⇪</div>
+          <h4>Drop Chest X-Ray Here</h4>
+          <p>Drag & drop or click to browse (supports PNG, JPG, JPEG)</p>
+          <input type="file" id="file-input" class="file-input" accept=".png,.jpg,.jpeg">
+        </div>
+
+        <div id="prediction-loader" class="loader-container">
+          <div class="hud-loader"></div>
+          <div class="loader-text">Analyzing X-Ray...</div>
+        </div>
+      </div>
+
+      <!-- Right side: Predict Output Panel -->
+      <div class="output-panel">
+        <!-- Classification Results (initially empty/hidden until prediction runs) -->
+        <div class="output-container" id="results-container" style="display: none;">
+          <div class="xray-view glass-panel">
+            <h5>Original X-Ray</h5>
+            <div class="image-frame">
+              <img id="input-preview" src="" alt="Original X-Ray">
+            </div>
+          </div>
+          
+          <div class="xray-view glass-panel">
+            <h5>Grad-CAM Localization</h5>
+            <div class="image-frame">
+              <img id="heatmap-preview" src="" alt="Heatmap Overlay">
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Card details -->
+        <div class="result-card glass-panel" id="result-details" style="display: none;">
+          <div class="result-header">
+            <h4>Diagnostic Summary</h4>
+            <span class="triage-badge" id="triage-badge">CLEAR</span>
+          </div>
+
+          <div class="findings-list" id="findings-list">
+            <!-- Populated via script -->
+          </div>
+
+          <div class="report-actions">
+            <button class="btn-report btn-report-primary" id="btn-generate-report">Generate Clinical Reports</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agentic Reports Panel (Displays below demo layout on trigger) -->
+    <div class="report-panel glass-panel" id="report-panel" style="margin-top: 40px;">
+      <div class="report-tabs">
+        <button class="report-tab active" data-tab="clinical">Clinical Report</button>
+        <button class="report-tab" data-tab="patient_en">Patient Summary (EN)</button>
+        <button class="report-tab" data-tab="patient_hi">Patient Summary (HI)</button>
+      </div>
+
+      <div id="report-loader" class="loader-container">
+        <div class="hud-loader"></div>
+        <div class="loader-text">Consulting Reasoning Agent...</div>
+      </div>
+
+      <div class="report-content" id="report-body">
+        <!-- Rendered markdown reports -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Metrics (3D Stats) -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-block glass-panel">
+        <div class="ring-bg"></div>
+        <div class="stat-num count-up" data-target="112000">0</div>
+        <div class="stat-label">X-Rays Trained</div>
+      </div>
+
+      <div class="stat-block glass-panel">
+        <div class="ring-bg"></div>
+        <div class="stat-num count-up" data-target="15">0</div>
+        <div class="stat-label">Diseases Detected</div>
+      </div>
+
+      <div class="stat-block glass-panel">
+        <div class="ring-bg"></div>
+        <div class="stat-num teal" style="font-family: var(--font-mono)">+30.7%</div>
+        <div class="stat-label">F1 Lift on Rare Classes</div>
+      </div>
+
+      <div class="stat-block glass-panel">
+        <div class="ring-bg"></div>
+        <div class="stat-num count-up" data-target="2">0</div>
+        <div class="stat-label">Bilingual Reports</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Novelty Callout -->
+  <section class="comparison">
+    <h2 class="section-title">Why <span>PneumoAgent</span>?</h2>
+    
+    <div class="comparison-grid">
+      <div class="comp-column glass-panel column-others">
+        <h4>Standard AI Tools</h4>
+        <div class="comp-list">
+          <div class="comp-item">
+            <span class="comp-icon">✕</span>
+            <span class="comp-text">Binary output only (no triage/severity priority).</span>
+          </div>
+          <div class="comp-item">
+            <span class="comp-icon">✕</span>
+            <span class="comp-text">Trained on Western demographics only (no TB dataset).</span>
+          </div>
+          <div class="comp-item">
+            <span class="comp-icon">✕</span>
+            <span class="comp-text">Black box prediction (no visual explainability).</span>
+          </div>
+          <div class="comp-item">
+            <span class="comp-icon">✕</span>
+            <span class="comp-text">Technical English reports only (inaccessible to patients).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-column glass-panel column-us">
+        <h4>PneumoAgent Pipeline</h4>
+        <div class="comp-list">
+          <div class="comp-item">
+            <span class="comp-icon">✓</span>
+            <span class="comp-text">Automatic clinical triage routing (Urgent / Follow-up / Clear).</span>
+          </div>
+          <div class="comp-item">
+            <span class="comp-icon">✓</span>
+            <span class="comp-text">Unified NIH + Shenzhen TB dataset classifier for local healthcare.</span>
+          </div>
+          <div class="comp-item">
+            <span class="comp-icon">✓</span>
+            <span class="comp-text">Grad-CAM highlight mapping the exact visual region of interest.</span>
+          </div>
+          <div class="comp-item">
+            <span class="comp-icon">✓</span>
+            <span class="comp-text">LLM report agent generating patient summaries in both English & Hindi.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-text">
+        PneumoAgent – Clinical Diagnostic Portal. Authorized medical personnel access only.
+      </div>
+      <div class="footer-tech">
+        SECURE CLINICAL NETWORK | HIPAA COMPLIANT | HL7 COMPATIBLE
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

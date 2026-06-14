@@ -1,0 +1,77 @@
+{
+  "Atelectasis": {
+    "definition": "Incomplete expansion or collapse of a part of the lung.",
+    "who_recommendation": "Encourage deep breathing exercises. Position patient in semi-Fowler's. If persistent or symptomatic, consider sputum clearance and search for underlying obstructive cause (e.g. mucus plug, foreign body).",
+    "triage": "Follow-up"
+  },
+  "Consolidation": {
+    "definition": "Alveoli filled with fluid, exudate, or other cells instead of air.",
+    "who_recommendation": "Evaluate for lobar pneumonia. Correlate clinically with fever, cough, and auscultatory findings. Initiate antibiotics if bacterial etiology is suspected per local guidelines.",
+    "triage": "Follow-up"
+  },
+  "Infiltration": {
+    "definition": "Ill-defined opacity representing fluid/cells in the lung parenchyma.",
+    "who_recommendation": "Commonly associated with infection or inflammation. Follow standard clinical protocols for pneumonia, viral syndromes, or pulmonary edema depending on distribution.",
+    "triage": "Follow-up"
+  },
+  "Pneumothorax": {
+    "definition": "Presence of air or gas in the pleural cavity causing lung collapse.",
+    "who_recommendation": "CRITICAL: Assess patient stability. Large or symptomatic pneumothorax, or tension pneumothorax, requires immediate chest tube insertion or needle decompression.",
+    "triage": "Urgent"
+  },
+  "Edema": {
+    "definition": "Fluid accumulation in the lungs, typically in alveoli and interstitial spaces.",
+    "who_recommendation": "CRITICAL: Evaluate for acute heart failure or non-cardiogenic ARDS. Administer supplemental oxygen and diuretic therapy (e.g. IV furosemide) promptly.",
+    "triage": "Urgent"
+  },
+  "Emphysema": {
+    "definition": "Destruction of alveolar walls leading to permanently enlarged air spaces.",
+    "who_recommendation": "Correlate with smoking history and COPD symptoms. Provide smoking cessation guidance, bronchodilators, and pulmonary rehabilitation as indicated.",
+    "triage": "Follow-up"
+  },
+  "Fibrosis": {
+    "definition": "Scarring of lung tissue, reducing compliance and gas exchange efficiency.",
+    "who_recommendation": "Review occupational and drug history. Refer to pulmonology for high-resolution CT (HRCT) and lung function testing if progressive dyspnea is present.",
+    "triage": "Follow-up"
+  },
+  "Effusion": {
+    "definition": "Accumulation of fluid in the pleural space.",
+    "who_recommendation": "Identify if transudative or exudative. Large effusions causing respiratory distress may require therapeutic thoracentesis. Investigate for cardiac, infectious, or malignant causes.",
+    "triage": "Follow-up"
+  },
+  "Pneumonia": {
+    "definition": "Infectious inflammation of the lung parenchyma.",
+    "who_recommendation": "CRITICAL: Triage using CURB-65 or PSI criteria. Assess oxygen saturation. Administer empirical antibiotics (e.g. amoxicillin or macrolides) within 4 hours if bacterial.",
+    "triage": "Urgent"
+  },
+  "Pleural_Thickening": {
+    "definition": "Thickening of the pleura, often a sequela of infection, hemothorax, or asbestos exposure.",
+    "who_recommendation": "Distinguish between localized pleural plaques and diffuse thickening. Review exposure history. Routine follow-up unless progressive or associated with mesothelioma signs.",
+    "triage": "Follow-up"
+  },
+  "Cardiomegaly": {
+    "definition": "Enlargement of the heart silhouette (cardiothoracic ratio > 50%).",
+    "who_recommendation": "Evaluate for underlying hypertension, valvular heart disease, or cardiomyopathy. Consider echocardiography and optimize cardiovascular medications.",
+    "triage": "Follow-up"
+  },
+  "Nodule": {
+    "definition": "Small rounded opacity <= 3 cm in diameter.",
+    "who_recommendation": "Follow Fleischner Society guidelines for management. Repeat chest CT in 3-12 months based on nodule size, characteristics, and patient risk factors.",
+    "triage": "Follow-up"
+  },
+  "Mass": {
+    "definition": "Large lung opacity > 3 cm in diameter, high risk of malignancy.",
+    "who_recommendation": "CRITICAL: High suspicion for neoplasm. Urgent referral for diagnostic chest CT with contrast, and consult thoracic oncology / pulmonology.",
+    "triage": "Urgent"
+  },
+  "Hernia": {
+    "definition": "Protrusion of abdominal contents (usually stomach) into the chest cavity via the diaphragm.",
+    "who_recommendation": "Evaluate for hiatal hernia. Correlate with symptoms of GERD or dysphagia. Surgical consultation if obstructed, strangulated, or highly symptomatic.",
+    "triage": "Follow-up"
+  },
+  "Tuberculosis": {
+    "definition": "Infectious disease caused by Mycobacterium tuberculosis, characterized by cavitary lesions, upper lobe infiltrates, or lymphadenopathy.",
+    "who_recommendation": "CRITICAL (India National TB Program Guideline): Place patient in isolation immediately. Obtain sputum for AFB smear, GeneXpert MTB/RIF. Notify health authorities. Initiate DOTS therapy if confirmed.",
+    "triage": "Urgent"
+  }
+}
