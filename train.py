@@ -26,13 +26,8 @@ class ChestXrayDataset(Dataset):
         row = self.df.iloc[idx]
         img_name = row["Image Index"]
         img_path = os.path.join(self.img_dir, img_name)
-        
-        # Load image
-        try:
-            image = Image.open(img_path).convert("RGB")
-        except Exception as e:
-            # Fallback if image load fails
-            image = Image.new("RGB", (224, 224), color="black")
+
+        image = Image.open(img_path).convert("RGB")
             
         if self.transform:
             image = self.transform(image)
@@ -152,7 +147,7 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False)
     
     # Load model (DenseNet-121 classifier head)
-    model = ChestXrayClassifier(num_classes=15, pretrained=True)
+    model = ChestXrayClassifier(num_classes=15, pretrained=not args.dev_synthetic)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     
