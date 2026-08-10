@@ -3,8 +3,8 @@
 PneumoAgent is an advanced clinical diagnostic portal designed to assist radiographers and clinical teams in screening chest radiographs. Combining a 15-class deep learning classifier with a multi-stage retrieval-augmented generation (RAG) pipeline, PneumoAgent generates structural clinical reports and translated patient-friendly summaries.
 
 ## Key Features
-- **15-Class Convolutional Classifier**: Built on a modified DenseNet-121 architecture trained on the NIH ChestX-ray14 dataset (112,000+ images) unified with the Shenzhen Tuberculosis dataset to support localized diagnostic needs (TB detection).
-- **F1 Threshold Optimization**: Tuned classification decision boundaries per-class to resolve data imbalance and improve the average F1-score of rare findings (e.g. Hernia, Emphysema, Pneumonia) from `0.39` to `0.51`.
+- **15-Class Convolutional Classifier**: Built on a modified DenseNet-121 architecture for NIH ChestX-ray14-compatible labels plus Tuberculosis support. A production checkpoint must be trained locally with a genuine labeled dataset.
+- **F1 Threshold Optimization**: Tunes classification decision boundaries per class to address data imbalance. Reported F1 results are pending a real dataset training and validation run; synthetic development results are not representative of clinical performance.
 - **Explainable Visual AI (Grad-CAM)**: Generates localized heatmap overlays on regions of interest using backpropagated gradients targeting the final convolutional features block (`features.norm5`).
 - **Structured RAG Medical Reports**: Uses a multi-stage pipeline linked to WHO chest radiograph screening standards to write formal clinical impressions.
 - **Bilingual Patient Summaries**: Translates clinical terminology into plain-language guides in English and Hindi.
@@ -45,18 +45,9 @@ PneumoAgent is an advanced clinical diagnostic portal designed to assist radiogr
 
 ---
 
-## Optimized Thresholds & Rare Disease Lift
+## Optimized Thresholds & Validation Results
 
-To combat severe class imbalance in datasets like NIH ChestX-ray14, we ran threshold-tuning on validation sets to maximize the F1 metric per class, moving away from default `0.50` decision boundaries.
-
-| Pathology / Finding | Default F1 (t=0.50) | Optimized Threshold | Optimized F1 | F1 Lift (%) |
-| :--- | :---: | :---: | :---: | :---: |
-| **Atelectasis** | 0.395 | 0.450 | 0.462 | +1.7% |
-| **Pneumothorax** | 0.334 | 0.350 | 0.428 | +9.4% |
-| **Pneumonia** | 0.125 | 0.250 | 0.315 | +19.0% |
-| **Hernia** | 0.040 | 0.150 | 0.280 | +24.0% |
-| **Tuberculosis** | 0.350 | 0.220 | 0.495 | +14.5% |
-| **Emphysema** | 0.210 | 0.300 | 0.385 | +17.5% |
+The training script tunes per-class thresholds on a held-out validation split to maximize F1 relative to the default `0.50` decision boundary. No real-dataset F1 results are claimed yet: `weights/densenet_checkpoint.pth` will be created only after running training with a genuine labeled dataset. The `--dev-synthetic` mode is intended only for code and CI validation.
 
 ---
 
