@@ -17,7 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UPLOAD_DIR = os.path.join(BASE_DIR, "static", "uploads")
 OUTPUT_DIR = os.path.join(BASE_DIR, "static", "output")
 WEIGHTS_DIR = os.path.join(BASE_DIR, "weights")
-WEIGHTS_PATH = os.path.join(WEIGHTS_DIR, "densenet_dummy.pth")
+CHKPNT_PATH = os.path.join(WEIGHTS_DIR, "densenet_checkpoint.pth")
+DUMMY_PATH = os.path.join(WEIGHTS_DIR, "densenet_dummy.pth")
 THRESHOLDS_PATH = os.path.join(BASE_DIR, "model", "thresholds.json")
 GUIDELINES_PATH = os.path.join(BASE_DIR, "agent", "rag_guidelines.json")
 
@@ -25,10 +26,16 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(WEIGHTS_DIR, exist_ok=True)
 
-# Generate dummy weights if they don't exist
-if not os.path.exists(WEIGHTS_PATH):
-    print("Generating dummy weights...")
-    generate_dummy_weights(WEIGHTS_PATH)
+# Select best available weights file
+if os.path.exists(CHKPNT_PATH):
+    WEIGHTS_PATH = CHKPNT_PATH
+elif os.path.exists(DUMMY_PATH):
+    WEIGHTS_PATH = DUMMY_PATH
+else:
+    # Legacy fallback: generate dummy weights if no model is trained
+    print("No trained checkpoint found. Generating legacy dummy weights for testing...")
+    generate_dummy_weights(DUMMY_PATH)
+    WEIGHTS_PATH = DUMMY_PATH
 
 # Initialize pipeline and agent
 pipeline = ChestXrayPipeline(weights_path=WEIGHTS_PATH, thresholds_path=THRESHOLDS_PATH)

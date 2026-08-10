@@ -67,20 +67,31 @@ class ChestXrayClassifier(nn.Module):
 def get_model(weights_path=None):
     """
     Factory function to get the model.
-    If weights_path is provided and exists, load the state dict.
-    Otherwise, returns model with default/initialized weights.
+    If weights_path is provided and exists, loads the state dict.
+    Otherwise, attempts to find the trained checkpoint 'weights/densenet_checkpoint.pth'.
+    If neither exists, returns the model with initialized weights.
     """
     model = ChestXrayClassifier(num_classes=15)
+    
+    # Try the explicitly provided path first
     if weights_path and os.path.exists(weights_path):
         model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+    else:
+        # Check for default trained checkpoint location
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        default_chkpt = os.path.join(base_dir, "weights", "densenet_checkpoint.pth")
+        if os.path.exists(default_chkpt):
+            model.load_state_dict(torch.load(default_chkpt, map_location=torch.device('cpu')))
+            
     return model
 
 def generate_dummy_weights(output_path):
     """
-    Generates a dummy weights file so the server can start up and run end-to-end inference
-    without downloading a huge model checkpoint first.
+    [LEGACY FALLBACK PATH] Generates a dummy weights file so the server can start up
+    and run end-to-end inference/CI tests without requiring a real model checkpoint.
     """
     model = ChestXrayClassifier(num_classes=15, pretrained=False)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     torch.save(model.state_dict(), output_path)
-    print(f"Dummy weights saved to {output_path}")
+    print(f"[LEGACY FALLBACK] Dummy weights saved to {output_path}")
+

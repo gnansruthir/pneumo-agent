@@ -1,12 +1,12 @@
 # PneumoAgent: Agentic Chest X-Ray Screening System
 
-PneumoAgent is an advanced clinical diagnostic portal designed to assist radiographers and clinical teams in screening chest radiographs. Combining a 15-class deep learning classifier with a multi-agent retrieval-augmented generation (RAG) pipeline, PneumoAgent generates structural clinical reports and translated patient-friendly summaries.
+PneumoAgent is an advanced clinical diagnostic portal designed to assist radiographers and clinical teams in screening chest radiographs. Combining a 15-class deep learning classifier with a multi-stage retrieval-augmented generation (RAG) pipeline, PneumoAgent generates structural clinical reports and translated patient-friendly summaries.
 
 ## Key Features
 - **15-Class Convolutional Classifier**: Built on a modified DenseNet-121 architecture trained on the NIH ChestX-ray14 dataset (112,000+ images) unified with the Shenzhen Tuberculosis dataset to support localized diagnostic needs (TB detection).
 - **F1 Threshold Optimization**: Tuned classification decision boundaries per-class to resolve data imbalance and improve the average F1-score of rare findings (e.g. Hernia, Emphysema, Pneumonia) from `0.39` to `0.51`.
 - **Explainable Visual AI (Grad-CAM)**: Generates localized heatmap overlays on regions of interest using backpropagated gradients targeting the final convolutional features block (`features.norm5`).
-- **Agentic RAG Medical Reports**: Uses a multi-agent pipeline linked to WHO chest radiograph screening standards to write formal clinical impressions.
+- **Structured RAG Medical Reports**: Uses a multi-stage pipeline linked to WHO chest radiograph screening standards to write formal clinical impressions.
 - **Bilingual Patient Summaries**: Translates clinical terminology into plain-language guides in English and Hindi.
 - **Dark Medical HUD Terminal**: A premium, responsive glassmorphic interface with 3D mouse parallax highlights and interactive diagnostic panels.
 
@@ -18,29 +18,29 @@ PneumoAgent is an advanced clinical diagnostic portal designed to assist radiogr
                        [ Upload X-Ray Image ]
                                  │
                        ┌─────────▼─────────┐
-                       │   Triage QA Agent │ (Format & CLAHE Preprocessing)
+                       │  Triage QA Stage  │ (Format & CLAHE Preprocessing)
                        └─────────┬─────────┘
                                  │
                        ┌─────────▼─────────┐
-                       │  Classifier Agent │ (DenseNet-121 multi-label inference)
+                       │  Classifier Stage │ (DenseNet-121 multi-label inference)
                        └─────────┬─────────┘
                                  │
-            ┌────────────────────┼────────────────────┐
-            ▼                    ▼                    ▼
-   ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-   │Localization Agt │  │  Triage Router  │  │ Reasoning (RAG) │
-   │   (Grad-CAM)    │  │ (Urgent/Follow) │  │ (WHO Guidelines)│
-   └────────┬────────┘  └────────┬────────┘  └────────┬────────┘
-            │                    │                    │
-            └────────────────────┼────────────────────┘
+             ┌────────────────────┼────────────────────┐
+             ▼                    ▼                    ▼
+    ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+    │  Localization   │  │  Triage Router  │  │ Reasoning (RAG) │
+    │   (Grad-CAM)    │  │ (Urgent/Follow) │  │ (WHO Guidelines)│
+    └────────┬────────┘  └────────┬────────┘  └────────┬────────┘
+             │                    │                    │
+             └────────────────────┼────────────────────┘
                                  │
                        ┌─────────▼─────────┐
-                       │    Report Agent   │ (Gemini API LLM Generator)
+                       │   Report Stage    │ (Gemini API LLM / fallback generator)
                        └─────────┬─────────┘
                                  │
-             ┌───────────────────┴───────────────────┐
-             ▼                                       ▼
-   [ Clinical Markdown Report ]            [ English & Hindi summaries ]
+              ┌───────────────────┴───────────────────┐
+              ▼                                       ▼
+    [ Clinical Markdown Report ]            [ English & Hindi summaries ]
 ```
 
 ---
