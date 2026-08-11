@@ -3,8 +3,8 @@
 PneumoAgent is an advanced clinical diagnostic portal designed to assist radiographers and clinical teams in screening chest radiographs. Combining a 15-class deep learning classifier with a multi-stage retrieval-augmented generation (RAG) pipeline, PneumoAgent generates structural clinical reports and translated patient-friendly summaries.
 
 ## Key Features
-- **15-Class Convolutional Classifier**: Built on a modified DenseNet-121 architecture for NIH ChestX-ray14-compatible labels plus Tuberculosis support. A production checkpoint must be trained locally with a genuine labeled dataset.
-- **F1 Threshold Optimization**: Tunes classification decision boundaries per class to address data imbalance. Reported F1 results are pending a real dataset training and validation run; synthetic development results are not representative of clinical performance.
+- **15-Class Convolutional Classifier**: Built on a modified DenseNet-121 architecture for NIH ChestX-ray14-compatible labels plus Tuberculosis support. The current checkpoint was trained on the Kaggle NIH sample.
+- **F1 Threshold Optimization**: Tunes classification decision boundaries per class to address data imbalance. On the 5,606-record Kaggle NIH sample, one training epoch produced an average validation F1 change from `0.004` at threshold `0.50` to `0.192` with optimized thresholds. These results are sample-based, not full-dataset clinical performance.
 - **Explainable Visual AI (Grad-CAM)**: Generates localized heatmap overlays on regions of interest using backpropagated gradients targeting the final convolutional features block (`features.norm5`).
 - **Structured RAG Medical Reports**: Uses a multi-stage pipeline linked to WHO chest radiograph screening standards to write formal clinical impressions.
 - **Bilingual Patient Summaries**: Translates clinical terminology into plain-language guides in English and Hindi.
@@ -47,7 +47,7 @@ PneumoAgent is an advanced clinical diagnostic portal designed to assist radiogr
 
 ## Optimized Thresholds & Validation Results
 
-The training script tunes per-class thresholds on a held-out validation split to maximize F1 relative to the default `0.50` decision boundary. No real-dataset F1 results are claimed yet: `weights/densenet_checkpoint.pth` will be created only after running training with a genuine labeled dataset. The `--dev-synthetic` mode is intended only for code and CI validation.
+The training script tunes per-class thresholds on a held-out validation split to maximize F1 relative to the default `0.50` decision boundary. In the verified one-epoch run on the 5,606-record Kaggle NIH sample, average validation F1 improved from `0.004` to `0.192`. The resulting checkpoint and thresholds are sample-based; the `--dev-synthetic` mode remains intended only for code and CI validation.
 
 ---
 
